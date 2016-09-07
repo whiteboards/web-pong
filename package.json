@@ -1,0 +1,24 @@
+{
+  "name": "web-pong",
+  "version": "0.0.1",
+  "description": "multiplayer pong",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whiteboards/web-pong.git"
+  },
+  "keywords": [
+    "pong",
+    "socketio",
+    "multiplayer"
+  ],
+  "author": "Nathan Bland <nathan.bland@gmail.com> (https://nathanbland.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/whiteboards/web-pong/issues"
+  },
+  "homepage": "https://github.com/whiteboards/web-pong#readme"
+}
