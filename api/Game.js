@@ -103,7 +103,7 @@ module.exports = (player1, player2, io) => {
       paddle1.down = true
     })
     setInterval(() => {
-      world.step(timeStep);
+      round.world.step(timeStep);
       checkMotion(round.paddle1, game)
       checkMotion(round.paddle2, game)
       io.in(game._id).emit('game_update', {
