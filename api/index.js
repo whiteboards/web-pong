@@ -22,15 +22,25 @@ module.exports = (client, io) => {
       console.log('acceptChallenge data:', data)
       let player1 = io.sockets.connected[data.socket_id]
       if (player1) {
-        console.log('player1 is still active:', player1)
-          if (player1.challenges[client.id]) {
-            console.log('challenge exists:', player1.challenges[client.id])
+        console.log('player1 is still active:', player1.user.username)
+        console.log('existing challenges for player1:', player1.challenges[client.id])
+          if (player1.challenges[client.id] === 0) {
+            console.log('challenge exists, accepting..')
+            player1.challenges[client.id] = 1
           }
       }
     })
     .on('decline_challenge', (data) => {
       console.log('declineChallenge data:', data)
-
+      let player1 = io.sockets.connected[data.socket_id]
+      if (player1) {
+        console.log('player1 is still active:', player1.user.username)
+        console.log('existing challenges for player1:', player1.challenges[client.id])
+          if (player1.challenges[client.id] === 0) {
+            console.log('challenge exists, declining..')
+            player1.challenges[client.id] = -1
+          }
+      }
     })
     .on('join_lobby', (data) => {
       console.log('join', connectedClient.user)
