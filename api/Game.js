@@ -47,12 +47,12 @@ const setupWorld = (game) => {
 const checkMotion = (paddle, game) => {
   if (paddle.up) {
     paddle.up = false
-    paddle.position = [10, paddle.position[1] + 1]
+    paddle.position = [paddle.position[0], paddle.position[1] + 1]
   } else if (paddle.down) {
     paddle.down = false
-    paddle.position = [10, paddle.position[1] - 1]
+    paddle.position = [paddle.position[0], paddle.position[1] - 1]
   } else {
-    paddle.position = [10, paddle.position[1]]
+    paddle.position = [paddle.position[0], paddle.position[1]]
   }
 }
 
@@ -88,19 +88,19 @@ module.exports = (player1, player2, io) => {
     let timeStep = 1 / 60
     player1.on('up', (data) => {
       // console.log('(p1) got data:', data)
-      paddle1.up = true 
+      round.paddle1.up = true 
     })
     player1.on('down', (data) => {
       // console.log('(p1) got data:', data)
-      paddle1.down = true
+      round.paddle1.down = true
     })
     player2.on('up', (data) => {
       // console.log('(p2) got data:', data)
-      paddle2.up = true
+      round.paddle2.up = true
     })
     player2.on('down', (data) => {
       // console.log('(p2) got data:', data)
-      paddle1.down = true
+      round.paddle1.down = true
     })
     setInterval(() => {
       round.world.step(timeStep);
@@ -120,8 +120,8 @@ module.exports = (player1, player2, io) => {
           y: round.ball.position[1]
         }
       })
-      console.log("paddle1 x position: " + round.paddle1.position[0])
-      console.log("paddle1 y position: " + round.paddle1.position[1])
+      // console.log("paddle1 x position: " + round.paddle1.position[0])
+      // console.log("paddle1 y position: " + round.paddle1.position[1])
     }, 1000 * timeStep)
   }, 3000)
   
