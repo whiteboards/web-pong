@@ -12,36 +12,6 @@ module.exports = (client, io) => {
       connectedClient.challenges = {}
       connectedClient.emit('authenticated')
     })
-    .on('challenge', (data) => {
-      console.log('challenge data:', data)
-      connectedClient.challenges[data.socket_id] = 0
-      connectedClient.broadcast.to(data.socket_id)
-        .emit('challenge', connectedClient.user)
-    })
-    .on('accept_challenge', (data) => {
-      console.log('acceptChallenge data:', data)
-      let player1 = io.sockets.connected[data.socket_id]
-      if (player1) {
-        console.log('player1 is still active:', player1.user.username)
-        console.log('existing challenges for player1:', player1.challenges[client.id])
-          if (player1.challenges[client.id] === 0) {
-            console.log('challenge exists, accepting..')
-            player1.challenges[client.id] = 1
-          }
-      }
-    })
-    .on('decline_challenge', (data) => {
-      console.log('declineChallenge data:', data)
-      let player1 = io.sockets.connected[data.socket_id]
-      if (player1) {
-        console.log('player1 is still active:', player1.user.username)
-        console.log('existing challenges for player1:', player1.challenges[client.id])
-          if (player1.challenges[client.id] === 0) {
-            console.log('challenge exists, declining..')
-            player1.challenges[client.id] = -1
-          }
-      }
-    })
     .on('join_lobby', (data) => {
       console.log('join', connectedClient.user)
       if (!connectedClient.user) {
@@ -62,13 +32,42 @@ module.exports = (client, io) => {
                 console.log('err:', err)
               } else {
                 io.in('lobby').emit('lobby_info', lobby)
-                // connectedClient.broadcast.to('lobby').emit('lobby_info', lobby)
-                // connectedClient.emit('loby_info', oldLobby)
                 console.log(lobby.users);
               }
             })
           }
         })
+      }
+    })
+    .on('challenge', (data) => {
+      console.log('challenge data:', data)
+      connectedClient.challenges[data.socket_id] = 0
+      connectedClient.broadcast.to(data.socket_id)
+        .emit('challenge', connectedClient.user)
+    })
+    .on('accept_challenge', (data) => {
+      console.log('acceptChallenge data:', data)
+      let player1 = io.sockets.connected[data.socket_id]
+      if (player1) {
+        console.log('player1 is still active:', player1.user.username)
+        console.log('existing challenges for player1:', player1.challenges[client.id])
+          if (player1.challenges[client.id] === 0) {
+            console.log('challenge exists, accepting..')
+            delete player1.challenges[client.id]
+            Game(player1, connectedClient, io)
+          }
+      }
+    })
+    .on('decline_challenge', (data) => {
+      console.log('declineChallenge data:', data)
+      let player1 = io.sockets.connected[data.socket_id]
+      if (player1) {
+        console.log('player1 is still active:', player1.user.username)
+        console.log('existing challenges for player1:', player1.challenges)
+          if (player1.challenges[client.id] === 0) {
+            console.log('challenge exists, declining..')
+            player1.challenges[client.id] = -1
+          }
       }
     })
     .on('disconnect', () => {
@@ -86,12 +85,6 @@ module.exports = (client, io) => {
            io.in('lobby').emit('lobby_info', lobby)
         })
       }
-    })
-    .on('up', (data) => {
-      console.log('got data:', data)
-    })
-    .on('down', (data) => {
-      console.log('got data:', data)
     })
   return client
 }

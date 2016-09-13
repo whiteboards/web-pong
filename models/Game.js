@@ -34,8 +34,9 @@ let Game = mongoose.Schema({
   height: {
     type: Number,
     default: 400
-  }
-  // users: [user]
+  },
+  player1: mongoose.Schema.Types.Mixed,
+  player2: mongoose.Schema.Types.Mixed
 })
 
 module.exports = mongoose.model('game', Game)

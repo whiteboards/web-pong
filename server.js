@@ -8,7 +8,7 @@ const api = require('./api')
 
 app.set('dbhost', process.env.dbHost || '127.0.0.1')
 app.set('dbname', process.env.dbName || 'web-pong')
-
+mongoose.promise = global.promise
 if (process.env.dbUser) {
   mongoose.connect('mongodb://'+process.env.dbUser+':'+process.env.dbPass+'@' + app.get('dbhost') + '/' + app.get('dbname'))
 } else {
