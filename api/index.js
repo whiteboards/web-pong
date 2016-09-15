@@ -58,6 +58,20 @@ module.exports = (client, io) => {
           }
       }
     })
+    .on('cancel_challenge', (data) => {
+      console.log('declineChallenge data:', data)
+      let player2 = io.sockets.connected[data.socket_id]
+      if (player2) {
+        console.log('player2 is still active:', player1.user.username)
+        console.log('existing challenges for player1:', player1.challenges)
+          if (player1.challenges[client.id] === 0) {
+            console.log('challenge exists, deleting..')
+            delete player1.challenges[client.id]
+          }
+          connectedClient.broadcast.to(data.socket_id)
+            .emit('cancel_challenge', connectedClient.user)
+      }
+    })
     .on('decline_challenge', (data) => {
       console.log('declineChallenge data:', data)
       let player1 = io.sockets.connected[data.socket_id]
